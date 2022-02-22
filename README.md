@@ -185,7 +185,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@yuhsinchan](https://github.com/yuhsinchan) - b08901046@ntu.edu.com
+Your Name - [@yuhsinchan](https://github.com/yuhsinchan) - b08901046@ntu.edu.tw
 
 Project Link: [https://github.com/NTURacingTeam/nturt_gps](https://github.com/NTURacingTeam/nturt_gps)
 
