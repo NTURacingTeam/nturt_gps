@@ -1,0 +1,3 @@
+<launch>
+    <node name="nturt_gps" pkg="nturt_gps" type="GPS.py" />
+</launch>
