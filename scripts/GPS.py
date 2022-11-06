@@ -9,8 +9,8 @@ def readGPS(data):
     keys = data.keys()
     for k in keys:
         if data[k] != "n/a":
-            # print("{}: {}".format(k, data[k]))
-    # print("----------------------------------")
+            print("{}: {}".format(k, data[k]))
+    print("----------------------------------")
 
 
 def gps_available(data):
@@ -56,7 +56,7 @@ def run():
             gpsf.track = float(GPS_raw_data.track)
             # gpsf.time = GPS_raw_data.time # str, not a float, type error, 
 
-        readGPS(vars(GPS_raw_data))
+        # readGPS(vars(GPS_raw_data))
         # pub.publish(Odom)
         pubgpsf.publish(gpsf)
         rate.sleep()
