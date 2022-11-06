@@ -9,8 +9,8 @@ def readGPS(data):
     keys = data.keys()
     for k in keys:
         if data[k] != "n/a":
-            print("{}: {}".format(k, data[k]))
-    print("----------------------------------")
+            # print("{}: {}".format(k, data[k]))
+    # print("----------------------------------")
 
 
 def gps_available(data):
@@ -25,11 +25,11 @@ def gps_available(data):
 
 
 def run():
-    pub = rospy.Publisher("GPS", Odometry, queue_size=100)
-    pubgpsf = rospy.Publisher("GPS_fix", GPSFix, queue_size=100)
+    # pub = rospy.Publisher("GPS", Odometry, queue_size=100)
+    pubgpsf = rospy.Publisher("GPS", GPSFix, queue_size=100)
     rospy.init_node("talker")
     rate = rospy.Rate(10)
-    Odom = Odometry()
+    # Odom = Odometry()
     agps_thread = AGPS3mechanism()
     agps_thread.stream_data()
     agps_thread.run_thread()
@@ -42,22 +42,22 @@ def run():
             speed = GPS_raw_data.speed
             track = math.radians(GPS_raw_data.track)
 
-            Odom.header.stamp = rospy.Time.now()
-            Odom.pose.pose.position.x = GPS_raw_data.lon
-            Odom.pose.pose.position.y = GPS_raw_data.lat
-            Odom.pose.pose.orientation.x = speed * math.cos(track)
-            Odom.pose.pose.orientation.y = speed * math.sin(track)
+            # Odom.header.stamp = rospy.Time.now()
+            # Odom.pose.pose.position.x = GPS_raw_data.lon
+            # Odom.pose.pose.position.y = GPS_raw_data.lat
+            # Odom.pose.pose.orientation.x = speed * math.cos(track)
+            # Odom.pose.pose.orientation.y = speed * math.sin(track)
 
-            gpsf.latitude = GPS_raw_data.lat
-            gpsf.longitude = GPS_raw_data.lon
-            gpsf.speed = GPS_raw_data.speed
-            gpsf.altitude = GPS_raw_data.alt
-            gpsf.climb = GPS_raw_data.climb
-            gpsf.track = GPS_raw_data.track
+            gpsf.latitude = float(GPS_raw_data.lat)
+            gpsf.longitude = float(GPS_raw_data.lon)
+            gpsf.speed = float(GPS_raw_data.speed)
+            gpsf.altitude = float(GPS_raw_data.alt)
+            gpsf.climb = float(GPS_raw_data.climb)
+            gpsf.track = float(GPS_raw_data.track)
             # gpsf.time = GPS_raw_data.time # str, not a float, type error, 
 
         readGPS(vars(GPS_raw_data))
-        pub.publish(Odom)
+        # pub.publish(Odom)
         pubgpsf.publish(gpsf)
         rate.sleep()
 
