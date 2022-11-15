@@ -32,15 +32,25 @@ def run():
     while not rospy.is_shutdown():
         GPS_raw_data = agps_thread.data_stream
         if gps_available(GPS_raw_data):
-            gpsf.latitude = GPS_raw_data.lat
-            gpsf.longitude = GPS_raw_data.lon
-            gpsf.speed = GPS_raw_data.speed
-            gpsf.altitude = GPS_raw_data.alt
-            gpsf.climb = GPS_raw_data.climb
-            gpsf.track = GPS_raw_data.track
+            speed = GPS_raw_data.speed
+            track = math.radians(GPS_raw_data.track)
+
+            # Odom.header.stamp = rospy.Time.now()
+            # Odom.pose.pose.position.x = GPS_raw_data.lon
+            # Odom.pose.pose.position.y = GPS_raw_data.lat
+            # Odom.pose.pose.orientation.x = speed * math.cos(track)
+            # Odom.pose.pose.orientation.y = speed * math.sin(track)
+
+            gpsf.latitude = float(GPS_raw_data.lat)
+            gpsf.longitude = float(GPS_raw_data.lon)
+            gpsf.speed = float(GPS_raw_data.speed)
+            gpsf.altitude = float(GPS_raw_data.alt)
+            gpsf.climb = float(GPS_raw_data.climb)
+            gpsf.track = float(GPS_raw_data.track)
             # gpsf.time = GPS_raw_data.time # str, not a float, type error, 
 
         # readGPS(vars(GPS_raw_data))
+        # pub.publish(Odom)
         pubgpsf.publish(gpsf)
         rate.sleep()
 
