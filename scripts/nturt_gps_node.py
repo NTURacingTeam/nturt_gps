@@ -1,9 +1,6 @@
 import rospy
-import math
 from gps3.agps3threaded import AGPS3mechanism
-from nav_msgs.msg import Odometry
 from gps_common.msg import GPSFix
-
 
 def readGPS(data):
     keys = data.keys()
@@ -11,7 +8,6 @@ def readGPS(data):
         if data[k] != "n/a":
             print("{}: {}".format(k, data[k]))
     print("----------------------------------")
-
 
 def gps_available(data):
     if (
@@ -23,13 +19,10 @@ def gps_available(data):
         return False
     return True
 
-
 def run():
-    pub = rospy.Publisher("GPS", Odometry, queue_size=100)
     pubgpsf = rospy.Publisher("GPS_fix", GPSFix, queue_size=100)
     rospy.init_node("talker")
     rate = rospy.Rate(10)
-    Odom = Odometry()
     agps_thread = AGPS3mechanism()
     agps_thread.stream_data()
     agps_thread.run_thread()
@@ -39,15 +32,6 @@ def run():
     while not rospy.is_shutdown():
         GPS_raw_data = agps_thread.data_stream
         if gps_available(GPS_raw_data):
-            speed = GPS_raw_data.speed
-            track = math.radians(GPS_raw_data.track)
-
-            Odom.header.stamp = rospy.Time.now()
-            Odom.pose.pose.position.x = GPS_raw_data.lon
-            Odom.pose.pose.position.y = GPS_raw_data.lat
-            Odom.pose.pose.orientation.x = speed * math.cos(track)
-            Odom.pose.pose.orientation.y = speed * math.sin(track)
-
             gpsf.latitude = GPS_raw_data.lat
             gpsf.longitude = GPS_raw_data.lon
             gpsf.speed = GPS_raw_data.speed
@@ -56,11 +40,9 @@ def run():
             gpsf.track = GPS_raw_data.track
             # gpsf.time = GPS_raw_data.time # str, not a float, type error, 
 
-        readGPS(vars(GPS_raw_data))
-        pub.publish(Odom)
+        # readGPS(vars(GPS_raw_data))
         pubgpsf.publish(gpsf)
         rate.sleep()
-
 
 if __name__ == "__main__":
     run()
