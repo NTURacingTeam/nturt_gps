@@ -32,15 +32,6 @@ def run():
     while not rospy.is_shutdown():
         GPS_raw_data = agps_thread.data_stream
         if gps_available(GPS_raw_data):
-            speed = GPS_raw_data.speed
-            track = math.radians(GPS_raw_data.track)
-
-            # Odom.header.stamp = rospy.Time.now()
-            # Odom.pose.pose.position.x = GPS_raw_data.lon
-            # Odom.pose.pose.position.y = GPS_raw_data.lat
-            # Odom.pose.pose.orientation.x = speed * math.cos(track)
-            # Odom.pose.pose.orientation.y = speed * math.sin(track)
-
             gpsf.latitude = float(GPS_raw_data.lat)
             gpsf.longitude = float(GPS_raw_data.lon)
             gpsf.speed = float(GPS_raw_data.speed)
